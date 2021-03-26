@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>路由间的参数传递</title>
+</head>
+<body>
+    <div id="app">
+        <router-link to="/com">组件1</router-link>
+        <!--路由出现位置-->
+        <router-view></router-view>
+    </div>
+    <script src="vue/vue.min.js"></script>
+    <script src="vue/vue-router.js"></script>
+    <script>
+        //注册组件
+        let com = {
+            template:`
+                <div>
+                    <h3 style="color: red">这是组件com</h3>
+                    <router-link to="/second?id=666&name='tom'">跳转到组件second</router-link>
+                </div>
+            `,
+        }
+        let second = {
+            template:`
+                <div>
+                    这是组件second
+                    接受组件传递过来的id----->{{$route.query.id}}
+                    <br>
+                    接受组件传递过来的name----->{{$route.query.name}}
+                </div>
+            `,
+        }
+        //注册路由
+        let myRouter=new VueRouter({
+            routes:[
+                {path:"/com",component:com},
+                {path:"/second",component:second},
+            ]
+        })
+
+        new Vue({
+            el:"#app",
+            data:{},
+            methods:{},
+            router:myRouter,
+        })
+    </script>
+</body>
+</html>

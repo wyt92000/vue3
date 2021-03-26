@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>localstorage使用</title>
+</head>
+<body>
+<script>
+    /**
+     * localStorage是以key-value形式存储数据的
+     * 使用localStorage存储的信息会直接以文本的形式保存到硬盘，不会随着页面刷新，浏览器关闭而消失
+     * localStorage中的数据必须用户主动删除才会消失，最多可以存储2-5M的数据
+     * **/
+    /*
+    localStorage.name = "hello world";
+    console.log(localStorage.name);
+
+    //删除数据
+    localStorage.removeItem("name");
+    console.log(localStorage.name);
+
+    //存储数据
+    localStorage.age = 12;
+    localStorage['bir'] = "2020-12-2";
+    localStorage.setItem("pwd", "123546");
+
+    //获取数据
+    let age = localStorage['age'];
+    let pwd = localStorage.pwd;
+    let bir = localStorage.getItem("bir");
+    console.log(age, pwd, bir);
+
+    //遍历数据
+    for (let n = 0; n < localStorage.length; n++) {
+        console.log("第" + n + "条数据key=" + localStorage.key(n) + ",value----" + localStorage.getItem(localStorage.key(n)));
+    }
+    //删除所有
+    localStorage.clear();
+    */
+    //对象存储的类型
+    localStorage.user={
+        id:21,
+        username:"刘亦菲",
+        age:18
+    }
+    let user2 = {
+        id:2,
+        username:"汪峰",
+        age:52,
+    }
+    console.log(typeof localStorage.user)
+    localStorage.user2 = JSON.stringify(user2);
+    console.log(localStorage.user2)
+    let parse = JSON.parse(localStorage.user2);
+    console.log(parse);
+    console.log(parse.username)
+</script>
+</body>
+</html>

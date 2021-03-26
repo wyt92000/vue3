@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>动态路由</title>
+</head>
+<body>
+    <div id="app">
+
+
+        <router-view></router-view>
+    </div>
+
+    <script src="vue/vue.min.js"></script>
+    <script src="vue/vue-router.js"></script>
+    <script>
+        let first={
+            template:`
+            <div>
+                这是first组件
+                <br>
+                <router-link to="/second/1/tom">查看id的下一页</router-link>
+                <router-link to="/thirh/2/jack">查看id的下一页</router-link>
+            </div>
+            `,
+        }
+         let second={
+            template:`
+            <div>
+                这是second组件
+                <br>
+                接受组件1的id--->{{$route.params.id}}
+                <br>
+                接收组件1的name---->{{$route.params.name}}
+            </div>
+            `,
+        }
+        let thirh={
+            template:`
+            <div>
+                这是thir组件
+                <br>
+                接受组件1的id--->{{$route.params.id}}
+                <br>
+                接收组件1的name--->{{$route.params.name}}
+            </div>
+            `,
+        }
+        let myRouter=new VueRouter({
+            routes:[
+                {path:"/first",component:first},
+                //参数通过位置进行匹配
+                {path:"/second/:id/:name",component:second},
+                {path:"/thirh/:id/:name",component:thirh},
+                {path:"/",component:first},
+            ]
+        })
+        new Vue({
+            el:"#app",
+            router:myRouter,
+        })
+    </script>
+</body>
+</html>

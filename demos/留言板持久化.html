@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>留言板持久化</title>
+</head>
+<body>
+<div id="app">
+    <h3>首页</h3>
+    <hr>
+    <router-link to="/first">留言板</router-link>
+    <router-link to="/second">学生列表页</router-link>
+    <router-view></router-view>
+</div>
+<script src="vue/vue.min.js"></script>
+<script src="vue/vue-router.js"></script>
+<script>
+    let first = {
+        template: `
+            <div>
+            <input type="text" v-model="msg">
+            <button @click="add_note">添加留言</button>
+            <hr>
+            <ul>
+                <li v-for="(message,index) in notebook" :key="index">
+                    {{message}}
+                    <a href="javascript:;" @click="dele_not(index,message)">删除</a>
+                </li>
+            </ul>
+            <p>总数量:{{localStorage.notebook?JSON.parse(localStorage.notebook).length:0}}条</p>
+            <a href="javascript:;" @click="all_dele">清空留言</a>
+            </div>
+        `,
+        data () {
+            return{
+                msg: "",
+                notebook: localStorage.notebook ? JSON.parse(localStorage.notebook) : [],
+            }
+        },
+        methods: {
+             add_note() {
+                let msg = this.msg;
+                if (msg) {
+                    this.notebook.push(msg);
+                    localStorage.notebook = JSON.stringify(this.notebook);
+                    this.msg = " ";
+                }
+            },
+            //删除留言
+            dele_not(index, message) {
+                //根据下标删除页面中的留言
+                this.notebook.splice(index, 1);
+                //再删除localstorage中的留言
+                console.log(message)
+                localStorage.removeItem(index);
+                localStorage.removeItem("message");
+            },
+            //全部删除
+            all_dele() {
+                this.notebook.splice(0);
+                localStorage.clear();
+            },
+        },
+    }
+    let second = {
+        template: `
+            <div>
+                <table border="1px" cellspacing="0">
+                    <tr>
+                      <td>id</td>
+                      <td>姓名</td>
+                      <td>年龄</td>
+                      <td>生日</td>
+                      <td>爱好</td>
+                      <td>操作</td>
+                    </tr>
+                    <tr v-for="(user,index) in users" :key="index">
+                      <td>{{user.id}}</td>
+                      <td>{{ user.username }}</td>
+                      <td>{{ user.age }}</td>
+                      <td>{{ user.bir }}</td>
+                      <td>{{ user.hobby }}</td>
+                      <td>
+                        <a href="javascript:;" @click="jump_text(index)">信息信息</a>
+                        <!---<router-link to="/three/index">详细信息</router-link>--->
+                        <a href="javascript:;">删除</a>
+                      </td>
+                    </tr>
+
+                </table>
+            </div>
+        `,
+        data(){
+            return{
+                users:[
+                    {id:1,username:"张三",age:18,bir:"2020-12-1",hobby:"篮球"},
+                    {id:2,username:"李四",age:28,bir:"2050-10-1",hobby:"足球"},
+                    {id:3,username:"王五",age:32,bir:"2030-7-1",hobby:"台球"},
+                    {id:4,username:"赵六",age:22,bir:"2022-2-1",hobby:"排球"},
+                    {id:5,username:"杨七",age:23,bir:"2010-2-1",hobby:"棒球"},
+                ]
+            }
+        },
+        methods:{
+            jump_text(index){
+                this.$router.push("/three/"+index);
+            },
+        }
+    }
+    let three={
+        template:`
+            <div>
+            接收的学生id为---->{{$route.params.index}}
+            <table border="1px" cellpadding="0">
+                <tr>
+                      <td>id</td>
+                      <td>姓名</td>
+                      <td>年龄</td>
+                      <td>生日</td>
+                      <td>爱好</td>
+                    </tr>
+                    <tr>
+                      <td>{{ $route.params.index}}</td>
+                      <td>{{ users[$route.params.index].username }}</td>
+                      <td>{{ users[$route.params.index].age }}</td>
+                      <td>{{ users[$route.params.index].bir }}</td>
+                      <td>{{ users[$route.params.index].hobby }}</td>
+                    </tr>
+            </table>
+            </div>
+        `,
+        methods:{
+            created(){
+                console.log(typeof this.$route.params.index)
+            }
+        },
+        data(){
+            return{
+                users:[
+                    {id:1,username:"张三",age:18,bir:"2020-12-1",hobby:"篮球"},
+                    {id:2,username:"李四",age:28,bir:"2050-10-1",hobby:"足球"},
+                    {id:3,username:"王五",age:32,bir:"2030-7-1",hobby:"台球"},
+                    {id:4,username:"赵六",age:22,bir:"2022-2-1",hobby:"排球"},
+                    {id:5,username:"杨七",age:23,bir:"2010-2-1",hobby:"棒球"},
+                ],
+            }
+        },
+    }
+    let myRouter = new VueRouter({
+        routes: [
+            {path: "/first", component: first},
+            {path: "/second", component: second},
+            {path: "/three/:index", component: three},
+            {path: "/",component: first},
+            // {path: "/*",component: first},
+        ]
+    })
+    new Vue({
+        el: "#app",
+        data: {},
+        router: myRouter,
+        methods: {},
+
+    })
+
+</script>
+</body>
+</html>

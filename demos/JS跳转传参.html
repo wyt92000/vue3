@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>js跳转传参</title>
+</head>
+<body>
+    <div id="app">
+        <router-view></router-view>
+    </div>
+    <script src="vue/vue.min.js"></script>
+    <script src="vue/vue-router.js"></script>
+    <script>
+        let first={
+            template:`
+                <div>
+                这是组件1
+                    <button @click="goPage">跳转到组件2</button>
+                </div>
+            `,
+            methods:{
+                goPage(){
+
+                    this.$router.push("/second?id=1")
+                    //this.$router.push({path:"/second/2"})
+                },
+            },
+        }
+        let second={
+            template:`
+                <div>
+                这是组件2
+                <br>
+                接受到1传递的id---->{{$route.query.id}}
+                接受到1传递的id---->{{$route.params.id}}
+                <br>
+                <button @click="goBack">返回上一页</button>
+                </div>
+            `,
+            methods:{
+                goBack(){
+                    this.$router.go(-1);
+                }
+            }
+
+        }
+         let myRouter=new VueRouter({
+            routes:[
+                {path:"/first",component:first},
+                //参数通过位置进行匹配
+                {path:"/second",component:second},
+                {path:"/",component:first},
+            ]
+        })
+        new Vue({
+            el:"#app",
+            router:myRouter,
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>路由回顾</title>
+</head>
+<body>
+    <div id="app">
+        <router-link to="/com">页面1</router-link>
+        <router-link to="/second">页面二</router-link>
+        <hr>
+        <!--指定路由出现位置-->
+        <router-view></router-view>
+    </div>
+    <script src="vue/vue.min.js"></script>
+    <script src="vue/vue-router.js"></script>
+    <script>
+        let com = {
+            template:`
+            <div>
+                这是com组件
+            </div>
+            `,
+        }
+        let second = {
+            template:`
+            <div>
+                这是second组件
+            </div>
+            `,
+        }
+        //定义路由
+        let myRouter = new VueRouter({
+            routes:[
+                {path:"/com",component:com},
+                {path:"/second",component:second},
+                {path:"/*",component:com},
+            ],
+        })
+        new Vue({
+            el:"#app",
+            router:myRouter,
+        })
+    </script>
+</body>
+</html>

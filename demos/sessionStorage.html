@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>sessionStorage</title>
+</head>
+<body>
+    <script>
+        //存储数据
+        sessionStorage.username="小黑";
+        sessionStorage["bir"]="2020-11-1";
+        sessionStorage.setItem("age","18");
+        //读取数据
+        let username = sessionStorage["username"];
+        let bir = sessionStorage.bir;
+        let age = sessionStorage.getItem("age");
+        console.log(username,bir,age);
+        //遍历数据
+        for(let n =0;n<sessionStorage.length;n++){
+            console.log("第"+n+"条数据的key是:"+sessionStorage.key(n)+",value----"+sessionStorage.getItem(sessionStorage.key(n)));
+        }
+
+    </script>
+</body>
+</html>
